@@ -1,0 +1,32 @@
+{
+  "id" : "test",
+  "name" : "test",
+  "type" : "form",
+  "uuid" : "8f5ada41-0053-4b86-abb6-2ae30532509d",
+  "modelVersion" : "2.6",
+  "lastUpdate" : 1742817425238,
+  "description" : "Page generated with Bonita UI designer",
+  "rows" : [
+    [ ]
+  ],
+  "variables" : { },
+  "assets" : [
+    {
+      "id" : "8c75dccd-9690-4ae2-9300-4bc5791b327f",
+      "name" : "style.css",
+      "type" : "css",
+      "order" : 0,
+      "external" : false
+    },
+    {
+      "id" : "57027b7c-dcdf-497b-95a4-80f2d4ad2280",
+      "name" : "localization.json",
+      "type" : "json",
+      "order" : 0,
+      "external" : false
+    }
+  ],
+  "inactiveAssets" : [ ],
+  "webResources" : [ ],
+  "hasValidationError" : false
+}
