@@ -14,3 +14,8 @@ Amélioration : Ajouter un système de paiement en ligne pour éviter les files 
 
 MDP :SIE1
 email : mm
+
+
+Point d’entrée pour tous les appels JSON-RPC vers Odoo :
+
+http://localhost:8069/jsonrpc
