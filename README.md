@@ -9,3 +9,8 @@ Associer un QR code à chaque table, redirigeant vers une interface de commande.
 Permettre aux clients de choisir parmi les bières et les formats disponibles.  
 Envoyer la commande directement à la caisse Odoo.  
 Amélioration : Ajouter un système de paiement en ligne pour éviter les files d’attente.  
+
+
+
+MDP :SIE1
+email : mm
