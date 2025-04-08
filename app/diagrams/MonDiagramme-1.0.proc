@@ -120,7 +120,7 @@
           <iteratorExpression xmi:type="expression:Expression" xmi:id="_FqtoTAiqEfCiZsckn0fidg" name="multiInstanceIterator" content="multiInstanceIterator" type="MULTIINSTANCE_ITERATOR_TYPE" returnType="java.lang.Object" returnTypeFixed="true"/>
           <completionCondition xmi:type="expression:Expression" xmi:id="_FqtoTQiqEfCiZsckn0fidg" name="" content="" returnType="java.lang.Boolean" returnTypeFixed="true"/>
           <formMapping xmi:type="process:FormMapping" xmi:id="_tRDuEwivEfCiZsckn0fidg">
-            <targetForm xmi:type="expression:Expression" xmi:id="_OBEvgBSNEfCQIasQd7ghYw" name="newForm" content="ac4c7b4a-5be6-418a-8dd9-a5b56a9aa8b7" type="FORM_REFERENCE_TYPE" returnTypeFixed="true"/>
+            <targetForm xmi:type="expression:Expression" xmi:id="_v53nMBSTEfCQIasQd7ghYw" name="FormCommand" content="d6ea6c1d-abf6-4f44-84fe-a350763020ff" type="FORM_REFERENCE_TYPE" returnTypeFixed="true"/>
           </formMapping>
           <contract xmi:type="process:Contract" xmi:id="_tRDuEgivEfCiZsckn0fidg">
             <inputs xmi:type="process:ContractInput" xmi:id="_06cpUBSMEfCQIasQd7ghYw" name="bière">
