@@ -131,20 +131,25 @@ if __name__ == '__main__':
 
 
 def parse_custom_string_to_json(input_str):
-    # Étape 1 : Entourer les clés de guillemets
+    # Étape 1 : Ajouter des guillemets autour des clés
     input_str = re.sub(r'(\w+):', r'"\1":', input_str)
 
-    # Étape 2 : Entourer les valeurs non numériques ni null de guillemets (comme "brune")
+    # Étape 2 : Ajouter des guillemets autour des valeurs texte non citées
     input_str = re.sub(r':\s*([a-zA-Z_]+)(?=[,\]\}])', r': "\1"', input_str)
 
     # Étape 3 : Remplacer les champs vides par null
     input_str = re.sub(r':\s*(?=[,\]\}])', r': null', input_str)
 
-    # Étape 4 : Corriger les doubles crochets [[...]] => [{...}]
-    input_str = re.sub(r'\[\s*\[', '[{', input_str)
-    input_str = re.sub(r'\]\s*\]', '}]', input_str)
+    # Étape 4 : Corriger les blocs de bières : ["quantité":..., "persistenceId_string":...] => {...}
+    # On cible chaque [ ... ] contenant au moins "quantité":
+    input_str = re.sub(r'\[\s*("quantité":.*?"persistenceId_string":.*?)(?=\])\]', r'{\1}', input_str)
 
-    # Étape 5 : Ajouter les accolades extérieures si c’est un objet global
+    # Étape 5 : Corriger les doubles crochets de la liste de bières
+    input_str = re.sub(r'\[\s*\{', '[{', input_str)
+    input_str = re.sub(r'\}\s*,\s*\{', '},{', input_str)
+    input_str = re.sub(r'\}\s*\]', '}]', input_str)
+
+    # Étape 6 : Ajouter des accolades autour de l'objet principal
     if input_str.startswith('[') and input_str.endswith(']'):
         input_str = '{' + input_str[1:-1] + '}'
 
@@ -153,7 +158,6 @@ def parse_custom_string_to_json(input_str):
         return json.dumps(parsed_json, indent=2)
     except json.JSONDecodeError as e:
         return f"Données JSON : Erreur lors de la conversion en JSON : {e}\nString traitée : {input_str}"
-    
 
 
 def ensure_pos_config_has_sequence(session_id):
