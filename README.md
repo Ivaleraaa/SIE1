@@ -12,10 +12,33 @@ Amélioration : Ajouter un système de paiement en ligne pour éviter les files 
 
 
 
-MDP :SIE1
+MDP :SIE1  
 email : mm
 
+# Comment run le projet ?
+```bash
+docker compose up -d
+```
+L'interface pdv se trouve en http://localhost:8069/web#action=372&model=pos.config&view_type=kanban&cids=1&menu_id=213  
+Il faut ouvrir une session bar.
 
-Point d’entrée pour tous les appels JSON-RPC vers Odoo :
+# Comment lancer le flask ?
+Afin qu'il marche sur MacOs : flask --app cmd:app run --port 8000 (le port 5000 est déjà attribué)  
+Sinon, : flask --app cmd:app run
 
-http://localhost:8069/jsonrpc
+Pour faire un test de requête Odoo : 
+```bash
+curl -X POST http://localhost:8000/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "idtable": 4,
+    "bieres": [
+      {
+        "quantité": null,
+        "persistenceId_string": "rousse"
+      }
+    ]
+  }' -v
+  ```
+
+Maintenant, il est possible de lancer Bonita afin d'executer le formulaire.
