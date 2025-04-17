@@ -2,16 +2,17 @@ from flask import Flask, request, jsonify
 import xmlrpc.client
 import re
 import json
+import random
 
 app = Flask("Beer manager")
 
-# Détails connexion Odoo
+# Détails connexion Odoo, définis lors de la creation d'odoo et dans le docker compose
 odoo_url = "http://localhost:8069"
 db_name = "postgres2"
 username = "mm"
 password = "SIE1"
 
-# Connexion XML-RPC
+# Connexion XML-RPC, récupérée depuis l'exemple du cours
 common = xmlrpc.client.ServerProxy(f"{odoo_url}/xmlrpc/2/common")
 models = xmlrpc.client.ServerProxy(f"{odoo_url}/xmlrpc/2/object")
 
@@ -27,7 +28,7 @@ except Exception as e:
     exit(1)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST']) # pas de route spécifique étant donné qu'il n'y en a qu'une seule
 def ajouter_bieres():
 
     raw = request.get_data(as_text=True)
@@ -65,7 +66,9 @@ def ajouter_bieres():
             ]],
             {'limit': 1})
 
+        # Si aucune commande existante, en créer une nouvelle
         if not order_ids:
+            reference = generate_odoo_pos_reference()
             order_id = models.execute_kw(db_name, uid, password,
                 'pos.order', 'create',
                 [{
@@ -75,11 +78,12 @@ def ajouter_bieres():
                     'amount_total': 0.0,
                     'amount_paid': 0.0,
                     'amount_return': 0.0,
+                    'pos_reference': reference
                 }])
         else:
             order_id = order_ids[0]
 
-        # 3. Ajouter les bières
+        # Ajouter les bières avec product.product
         for biere in bieres:
             name = biere.get('persistenceId_string')
             if not name:
@@ -94,7 +98,7 @@ def ajouter_bieres():
 
             product_id = product_ids[0]
 
-            # Lire infos produit : prix et taxes
+            # lire infos produit pour le prix et les taxes
             product_data = models.execute_kw(db_name, uid, password,
                 'product.product', 'read',
                 [product_id], {'fields': ['lst_price', 'taxes_id']})
@@ -102,7 +106,7 @@ def ajouter_bieres():
             price_unit = product_data[0]['lst_price']
             taxes = product_data[0].get('taxes_id', [])
 
-            # Ajouter ligne de commande POS
+            # ajouter ligne de commande point de vente
             models.execute_kw(db_name, uid, password,
                 'pos.order.line', 'create',
                 [{
@@ -111,8 +115,8 @@ def ajouter_bieres():
                     'qty': 1.0,
                     'price_unit': price_unit,
                     'tax_ids': [(6, 0, taxes)],
-                    'price_subtotal': price_unit,             # ← obligatoire
-                    'price_subtotal_incl': price_unit         # ← idem
+                    'price_subtotal': price_unit,             
+                    'price_subtotal_incl': price_unit         
                 }])
 
         return jsonify({'success': True, 'commande_id': order_id}), 200
@@ -120,6 +124,9 @@ def ajouter_bieres():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+
+# Etant donné que bonita nous envoie un objet java, nous avons du le recupérer sous forme de texte puis le formater manuellement en json grace à différentes regex
 
 def parse_custom_string_to_json(input_str):
     input_str = re.sub(r'(\w+):', r'"\1":', input_str)
@@ -134,6 +141,10 @@ def parse_custom_string_to_json(input_str):
         input_str = '{' + input_str[1:-1] + '}'
 
     return input_str
+
+# Odoo POS a besoin d'une référence sinon ça cause une erreur dans odoo. Pour réparer ça, voilà la référence.
+def generate_odoo_pos_reference():
+    return f"{random.randint(10000,99999)}-{random.randint(100,999)}-{random.randint(1000,9999)}"
 
 
 if __name__ == '__main__':
