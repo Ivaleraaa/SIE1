@@ -33,6 +33,8 @@ def ajouter_bieres():
 
     raw = request.get_data(as_text=True)
     data = parse_custom_string_to_json(raw)
+    print(f"Received data before : {raw}")
+    print(f"Received data: {data}")
     try:
         data = json.loads(data)
     except json.JSONDecodeError as e:
