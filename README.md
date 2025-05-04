@@ -7,13 +7,17 @@ Objectif : Permettre aux clients de commander depuis leur table.
 Idée :  
 Associer un QR code à chaque table, redirigeant vers une interface de commande.  
 Permettre aux clients de choisir parmi les bières et les formats disponibles.  
-Envoyer la commande directement à la caisse Odoo.  
-Amélioration : Ajouter un système de paiement en ligne pour éviter les files d’attente.  
+Envoyer la commande directement à la caisse Odoo.    
 
+A propos de la configuration du Odoo :   
+IL est impératif d'avoir les bières crées dans les produits que propose le bar. Sinon, le service ne fonctionnera pas.  
+Dans le module point de vente, il faut avoir coché la case "est un bar / restaurant" dans les paramètres du module, afin que chaque commande ait une table associée. Aussi, il faut bien que les tables aient un simple numéro comme nom, et non "T1", "T2" ou autre. Pour changer cela, il faut modifier le plan de la salle dans les paramètres du module.  
 
+Afin que le projet puisse fonctionner, il faut créer une session bar/restaurant, et qu'elle soit active.
 
 MDP :SIE1  
 email : mm
+
 
 # Comment run le projet ?
 ```bash
@@ -23,8 +27,8 @@ L'interface pdv se trouve en http://localhost:8069/web#action=372&model=pos.conf
 Il faut ouvrir une session bar.
 
 # Comment lancer le flask ?
-Afin qu'il marche sur MacOs : flask --app cmd:app run --port 8000 (le port 5000 est déjà attribué)  
-Sinon, : flask --app cmd:app run
+`flask --app cmd:app run --port 8000`  
+
 
 Pour faire un test de requête Odoo : 
 ```bash

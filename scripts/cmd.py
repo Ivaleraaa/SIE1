@@ -47,7 +47,7 @@ def ajouter_bieres():
         return jsonify({'error': 'ID table ou bières manquants'}), 400
 
     try:
-        # 1. Session POS active
+        # Session POS active
         session_ids = models.execute_kw(db_name, uid, password,
             'pos.session', 'search',
             [[['state', '=', 'opened']]],
@@ -58,7 +58,7 @@ def ajouter_bieres():
 
         session_id = session_ids[0]
 
-        # 2. Vérifier la commande POS liée à la table
+        # Vérifier la commande POS liée à la table
         order_ids = models.execute_kw(db_name, uid, password,
             'pos.order', 'search',
             [[
